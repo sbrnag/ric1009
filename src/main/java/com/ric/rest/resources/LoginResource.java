@@ -110,9 +110,9 @@ public class LoginResource {
 	 */
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/forgetPassword/{sessionid}")
+	@Path("/resetPassword/{sessionid}/{password}")
 	public Response resetPassword(@PathParam("sessionid") String sessionId,
-			@FormParam("password") String password) {
+			@PathParam("password") String password) {
 
 		return loginService.resetPassword(sessionId, password);
 	}
