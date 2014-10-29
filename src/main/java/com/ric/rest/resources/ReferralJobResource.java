@@ -9,6 +9,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ric.rest.providers.Secure;
 import com.ric.util.AppConstants;
 
@@ -19,6 +22,7 @@ import com.ric.util.AppConstants;
 
 @Path("/")
 public class ReferralJobResource {
+	static final Logger log = LoggerFactory.getLogger(ReferralJobResource.class);	
 
 	@POST
 	@Secure

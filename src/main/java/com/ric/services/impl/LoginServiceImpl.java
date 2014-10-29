@@ -3,6 +3,8 @@ package com.ric.services.impl;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.dao.DuplicateKeyException;
@@ -12,6 +14,7 @@ import com.ric.domain.Session;
 import com.ric.domain.User;
 import com.ric.mongodb.repository.SessionRepository;
 import com.ric.mongodb.repository.UserRepository;
+import com.ric.rest.providers.RICSecurityContextFilter;
 import com.ric.services.LoginService;
 import com.ric.services.MailService;
 import com.ric.util.AppConstants;
@@ -19,6 +22,7 @@ import com.ric.util.AppConstants;
 @Service("loginService")
 public class LoginServiceImpl implements LoginService {
 
+	static final Logger log = LoggerFactory.getLogger(LoginServiceImpl.class);
 	@Autowired
 	private UserRepository userRepository;
 
@@ -109,6 +113,7 @@ public class LoginServiceImpl implements LoginService {
 	public Response authenticate(String userName, String password) {	
 		Response response;
 
+		log.info("user is trying to login ");
 		try {
 			if(userRepository.authenticate(userName, password)) {
 				Session session = sessionRepository.getSessionByUserName(userName);
@@ -143,6 +148,7 @@ public class LoginServiceImpl implements LoginService {
 	public Response forgetPassword(String mailId) {
 		Response response;
 		
+		log.info("forgot password is Executing ");
 		//bean validation and parameters validation should be done.
 		String[] str = mailId.split("@");
 		String userName = str[0];
@@ -162,7 +168,7 @@ public class LoginServiceImpl implements LoginService {
 				String from = "referralindiadomains@gmail.com";
 				String to = mailId;
 				String subject = AppConstants.RESET_PASSWORD_MAIL_SUBJECT;
-				String body = "http://localhost:8080/referralindia/resetPassword/" + sessionId;
+				String body = "http://localhost:9090/referralindia/resetPassword/" + sessionId;
 				mailService.sendMail(from, to, subject, body);
 				response = getResponse(200, MediaType.APPLICATION_JSON, AppConstants.FORGET_PASSWORD_RESPONSE_MESSAGE);
 			} else{
@@ -191,6 +197,7 @@ public class LoginServiceImpl implements LoginService {
 			response = getResponse(404, MediaType.APPLICATION_JSON, AppConstants.INVALID_REQUEST_FOR_PASSWORD_RESET);
 		}
 		} catch(Exception e) {
+			
 			response = getResponse(500, MediaType.APPLICATION_JSON, AppConstants.INTERNAL_SERVER_ERROR);
 		}
 		

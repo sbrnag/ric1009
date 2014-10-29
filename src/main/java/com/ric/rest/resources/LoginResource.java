@@ -17,6 +17,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ric.domain.User;
@@ -25,7 +29,7 @@ import com.ric.util.AppConstants;
 
 @Path("/")
 public class LoginResource {
-
+	static final Logger log = LoggerFactory.getLogger(LoginResource.class);
 	@Autowired
 	private LoginService loginService;
 
@@ -55,6 +59,7 @@ public class LoginResource {
 	@Path("/signup")
 	public Response signup(User user) {
 		
+		log.info("new user going  to signin");
 		Set<String> roles = new HashSet<String>();
 		roles.add(AppConstants.ROLE_USER);
 		user.setRoles(roles);
@@ -110,9 +115,9 @@ public class LoginResource {
 	 */
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/forgetPassword/{sessionid}")
+	@Path("/resetPassword/{sessionid}/{password}")
 	public Response resetPassword(@PathParam("sessionid") String sessionId,
-			@FormParam("password") String password) {
+			@PathParam("password") String password) {
 
 		return loginService.resetPassword(sessionId, password);
 	}

@@ -77,6 +77,7 @@ public class RICSecurityContext implements SecurityContext {
 				// Forbidden (valid user but don't have the authorized role)
 					Response denied = Response.status(Response.Status.FORBIDDEN)
 							.entity("Permission Denied").build();
+					
 					throw new WebApplicationException(denied);
 			 }
 			

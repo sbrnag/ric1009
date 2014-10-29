@@ -23,19 +23,21 @@
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
-		<property name="port" value="25" />
+		<property name="port" value="587" />
 		<property name="username" value="referralindiadomains@gmail.com" />
 		<property name="password" value="RID34306786" />
 		<property name="javaMailProperties">
 			<props>
 				<!-- Use SMTP transport protocol -->
-				<prop key="mail.transport.protocol">smtp</prop>
+				<!-- <prop key="mail.transport.protocol">smtp</prop> -->
+
+				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
 				<!-- Use SMTP-AUTH to authenticate to SMTP server -->
-				<prop key="mail.smtp.auth">false</prop>
+				<prop key="mail.smtp.auth">true</prop>
 				<!-- Use TLS to encrypt communication with SMTP server -->
 				<prop key="mail.smtp.starttls.enable">true</prop>
-				<prop key="mail.debug">true</prop> 
-				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+
 			</props>
 
 		</property>
